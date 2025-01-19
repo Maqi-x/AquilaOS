@@ -10,7 +10,7 @@ Navigate to [Github Releases of the project](https://github.com/Maqi-x/AquilaOS/
 
 ## Authors
 
-AquilaOS is a fork of the original AquilaOS operating system created by [Interpuce](https://github.com/Interpuce)
+AquilaOS is a fork of the original AurorOS operating system created by [Interpuce](https://github.com/Interpuce)
 fork is developed by @Maqi-x
 
 ## Contributions
