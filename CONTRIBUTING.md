@@ -9,7 +9,7 @@ There are standards in writing code for AquilaOS and to not make ten next useles
 1. Use [camelCase](https://en.wikipedia.org/wiki/camelCase) or PascalCase style.
 2. Never make directory in repo root folder if this is not absolutelly necessary (read [your creation warning](#contributing-to-the-apps)).
 3. Do not use `#include "../include/something_there.hpp"`. Instead, use `#include <something_there.hpp>`.
-4. Do not make any C or other non-header files in `include` directory.
+4. Do not make any C/C++ or other non-header files in `include` directory.
 
 Your pull request will be **rejected** if any of standards above is not used in your code.
 
@@ -49,6 +49,6 @@ Run this command to run the OS:
 
 `make run`
 
-or You can run AquilaOS using this command:
+Or you can run AquilaOS using this command:
 
 `qemu-system-x86_64 -kernel kernel.elf`
