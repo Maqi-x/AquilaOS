@@ -28,5 +28,11 @@
 
 # Executables
 *.exe
+*.elf
+*.bin
 *.out
 *.app
+
+
+.idea/
+.vscode/
