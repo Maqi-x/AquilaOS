@@ -27,14 +27,12 @@ section .multiboot
 section .text
 
 ; The main function where AquilaOS starts. It is also declared in
-; linker script (/compile/linker.ld), defined in /kernel/kernel.c
+; linker script (/src/link.ld), defined in /src/kernel/kernel.c
 ; file.
 global start
 extern main
 
 start:
     cli ; Clear interrupts
-    call main ; Call the main function (from /kernel/kernel.c)
+    call main ; Call the main function (from /src/kernel/kernel.c)
     hlt ; Halt the proccessor
-
-; eclair was here (twice)
