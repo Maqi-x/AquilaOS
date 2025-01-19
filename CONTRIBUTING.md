@@ -37,7 +37,7 @@ To clone, compile and run virtually AquilaOS you will need `git`, `make`, `lld`,
 
 Clone the repository to the current folder skipping unnecessary commit history:
 
-`git clone https://github.com/Interpuce/AquilaOS . --depth 1`
+`git clone https://github.com/Maqi-x/AquilaOS . --depth 1`
 
 Run this command in AquilaOS repo to build the OS:
 
