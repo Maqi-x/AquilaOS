@@ -1,36 +1,34 @@
-/**
- * -------------------------------------------------------------------------
+/******************************************************************************
  *                                   AquilaOS
- * (c) 2022-2024 Interpuce
- * 
+ * (c) 2025 Maqix
+ *
  * You should receive AquilaOS license with this source code. If not - check:
- *  https://github.com/Interpuce/AquilaOS/blob/main/LICENSE.md
- * -------------------------------------------------------------------------
- */
+ *  https://github.com/Maqi-x/AquilaOS/blob/main/LICENSE.md
+ ******************************************************************************/
 
-#include <types.hpp>
 #include <memory.hpp>
+#include <types.hpp>
 
 #define MEMORY_POOL_SIZE 1024 * 1024
 
-typedef struct memory_block {
-    size_t size;
-    struct memory_block *next;
-    int free;
-} memory_block_t;
+typedef struct MemoryBlock {
+    size_t Size;
+    struct MemoryBlock *Next;
+    int Free;
+} MemoryBlockT;
 
-static uint8_t memory_pool[MEMORY_POOL_SIZE];
-static memory_block_t *free_list = (memory_block_t *)memory_pool;
+static uint8_t memoryPool[MEMORY_POOL_SIZE];
+static MemoryBlockT *freeList = (MemoryBlockT *)memoryPool;
 
-void init_memory() {
-    free_list->size = MEMORY_POOL_SIZE - sizeof(memory_block_t);
-    free_list->next = nullptr;
-    free_list->free = 1;
+void InitMemory() {
+    freeList->Size = MEMORY_POOL_SIZE - sizeof(MemoryBlockT);
+    freeList->Next = nullptr;
+    freeList->Free = 1;
 }
 
-void *memcpy(void *dest, const void *src, size_t n) {
-    unsigned char *d = (unsigned char*)dest;
-    const unsigned char *s = (const unsigned char*)src;
+extern "C" void *memcpy(void *dest, const void *src, size_t n) {
+    unsigned char *d = (unsigned char *)dest;
+    const unsigned char *s = (const unsigned char *)src;
     for (size_t i = 0; i < n; i++) {
         d[i] = s[i];
     }
@@ -38,22 +36,22 @@ void *memcpy(void *dest, const void *src, size_t n) {
 }
 
 void *malloc(size_t size) {
-    memory_block_t *current = free_list;
+    MemoryBlockT *current = freeList;
     while (current != NULL) {
-        if (current->free && current->size >= size) {
-            if (current->size > size + sizeof(memory_block_t)) {
-                memory_block_t *new_block = (memory_block_t*)((uint8_t*)current + sizeof(memory_block_t) + size);
-                new_block->size = current->size - size - sizeof(memory_block_t);
-                new_block->next = current->next;
-                new_block->free = 1;
+        if (current->Free && current->Size >= size) {
+            if (current->Size > size + sizeof(MemoryBlockT)) {
+                MemoryBlockT *newBlock = (MemoryBlockT *)((uint8_t *)current + sizeof(MemoryBlockT) + size);
+                newBlock->Size = current->Size - size - sizeof(MemoryBlockT);
+                newBlock->Next = current->Next;
+                newBlock->Free = 1;
 
-                current->size = size;
-                current->next = new_block;
+                current->Size = size;
+                current->Next = newBlock;
             }
-            current->free = 0;
-            return (void *)((uint8_t *)current + sizeof(memory_block_t));
+            current->Free = 0;
+            return (void *)((uint8_t *)current + sizeof(MemoryBlockT));
         }
-        current = current->next;
+        current = current->Next;
     }
     return NULL;
 }
@@ -61,29 +59,37 @@ void *malloc(size_t size) {
 void free(void *ptr) {
     if (ptr == NULL) return;
 
-    memory_block_t *block = (memory_block_t *)((uint8_t *)ptr - sizeof(memory_block_t));
-    block->free = 1;
+    MemoryBlockT *block = (MemoryBlockT *)((uint8_t *)ptr - sizeof(MemoryBlockT));
+    block->Free = 1;
 
-    if (block->next != NULL && block->next->free) {
-        block->size += sizeof(memory_block_t) + block->next->size;
-        block->next = block->next->next;
+    if (block->Next != NULL && block->Next->Free) {
+        block->Size += sizeof(MemoryBlockT) + block->Next->Size;
+        block->Next = block->Next->Next;
     }
 
-    memory_block_t *current = free_list;
+    MemoryBlockT *current = freeList;
     while (current != NULL) {
-        if (current->next == block && current->free) {
-            current->size += sizeof(memory_block_t) + block->size;
-            current->next = block->next;
+        if (current->Next == block && current->Free) {
+            current->Size += sizeof(MemoryBlockT) + block->Size;
+            current->Next = block->Next->Next;
             break;
         }
-        current = current->next;
+        current = current->Next;
     }
 }
 
 extern "C" void *memset(void *s, int c, size_t n) {
-    unsigned char *ptr = (unsigned char*)s;
+    unsigned char *ptr = (unsigned char *)s;
     while (n--) {
         *ptr++ = (unsigned char)c;
     }
     return s;
 }
+
+void *operator new(size_t size) { return malloc(size); }
+
+void *operator new[](size_t size) { return malloc(size); }
+
+void operator delete(void *ptr) noexcept { free(ptr); }
+
+void operator delete[](void *ptr) noexcept { free(ptr); }

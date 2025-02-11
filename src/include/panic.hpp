@@ -1,21 +1,19 @@
-/**
- * -------------------------------------------------------------------------
+/******************************************************************************
  *                                   AquilaOS
- * (c) 2022-2024 Interpuce
- * 
+ * (c) 2025 Maqix
+ *
  * You should receive AquilaOS license with this source code. If not - check:
- *  https://github.com/Interpuce/AquilaOS/blob/main/LICENSE.md
- * -------------------------------------------------------------------------
- */
+ *  https://github.com/Maqi-x/AquilaOS/blob/main/LICENSE.md
+ ******************************************************************************/
 
 #pragma once
 
-#define COLOR_1 0x47
-#define COLOR_2 0x4F
-#define COLOR_3 0x44
-
 #include <msg.hpp>
-#include <types.hpp>
 #include <screen.hpp>
+#include <types.hpp>
+
+constexpr uint8_t COLOR_1 = 0x47;
+constexpr uint8_t COLOR_2 = 0x4F;
+constexpr uint8_t COLOR_3 = 0x47;
 
 void kernelpanic(const char *errcode);

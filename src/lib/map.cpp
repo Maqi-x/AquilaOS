@@ -1,44 +1,94 @@
-#include "map.h"
+#include "map.hpp"
+#include <memory.hpp>
+#include <msg.hpp>
+#include <screen.hpp>
 
-KeyValue map[MAP_SIZE];
+namespace map {
 
-uint32_t hash(string key) {
-    uint32_t hashValue = 0;
-    while (*key) {
-        hashValue = (hashValue * 31) + *key++;
+void Init(MapStrStr *map, size_t initialCapacity) {
+    map->capacity = initialCapacity;
+    map->size = 0;
+    map->data = (Pair *)malloc(initialCapacity * sizeof(Pair));
+}
+
+void Free(MapStrStr *map) {
+    for (size_t i = 0; i < map->size; ++i) {
+        free(map->data[i].key);
+        free(map->data[i].value);
     }
-    return hashValue % MAP_SIZE;
+    free(map->data);
 }
 
-void mapAdd(string key, string value) {
-    uint32_t index = hash(key);
-    map[index] = KeyValue{key, value};
+void Resize(MapStrStr *map) {
+    size_t newCapacity = map->capacity * 2;
+    io::Print("Resizing from ", 0x07);
+    printint(map->capacity, 0x07);
+    io::Print(" to ", 0x07);
+    printint(newCapacity, 0x07);
+    io::Println("", 0x07);
+
+    Pair *newData = (Pair *)malloc(newCapacity * sizeof(Pair));
+    if (!newData) return;
+
+    for (size_t i = 0; i < map->size; ++i) {
+        io::Println(map->data[i].key, 0x07);
+        newData[i] = map->data[i];
+    }
+
+    free(map->data);
+    map->data = newData;
+    map->capacity = newCapacity;
 }
 
-string mapGet(string key) {
-    uint32_t index = hash(key);
-    return map[index].value;
-}
+void Insert(MapStrStr *map, const char *key, const char *value) {
+    if (map->size == map->capacity) {
+        Resize(map);
+    }
 
-void mapRemove(string key) {
-    uint32_t index = hash(key);
-    map[index] = KeyValue{nullptr, nullptr};
-}
-
-uint32_t getSize() {
-    uint32_t count = 0;
-    for (uint32_t i = 0; i < MAP_SIZE; i++) {
-        if (map[i].key != nullptr) {
-            count++;
+    for (size_t i = 0; i < map->size; ++i) {
+        if (strEq(map->data[i].key, key)) {
+            free(map->data[i].value);
+            map->data[i].value = (char *)malloc(strlen(value) + 1);
+            strcpy(map->data[i].value, value);
+            return;
         }
     }
-    return count;
+
+    if (map->size == map->capacity) {
+        Resize(map);
+    }
+
+    map->data[map->size].key = (char *)malloc(strlen(key) + 1);
+    strcpy(map->data[map->size].key, key);
+
+    map->data[map->size].value = (char *)malloc(strlen(value) + 1);
+    strcpy(map->data[map->size].value, value);
+
+    ++map->size;
+    ;
 }
 
-string mapKeyAt(string key) {
-    uint32_t index = hash(key);
-    if (map[index].key != nullptr && map[index].key == key) {
-        return map[index].value;
+char *Get(MapStrStr *map, const char *key) {
+    for (size_t i = 0; i < map->size; ++i) {
+        if (strEq(map->data[i].key, key)) {
+            return map->data[i].value;
+        }
     }
     return nullptr;
 }
+
+void Remove(MapStrStr *map, const char *key) {
+    for (size_t i = 0; i < map->size; ++i) {
+        if (strEq(map->data[i].key, key)) {
+            free(map->data[i].key);
+            free(map->data[i].value);
+            for (size_t j = i; j < map->size - 1; ++j) {
+                map->data[j] = map->data[j + 1];
+            }
+            --map->size;
+            return;
+        }
+    }
+}
+
+} // namespace map

@@ -1,16 +1,10 @@
-#include <stdint.h>
-#include <memory.hpp>
 #include <hardware/cpu.hpp>
+#include <memory.hpp>
+#include <stdint.h>
 
-void cpuid(uint32_t eax, uint32_t ecx, uint32_t* regs) {
-    __asm__ volatile(
-        "cpuid"
-        : "=a" (regs[0]), "=b" (regs[1]), "=c" (regs[2]), "=d" (regs[3])
-        : "a" (eax), "c" (ecx)
-    );
-}
+void cpuid(uint32_t eax, uint32_t ecx, uint32_t *regs) { __asm__ volatile("cpuid" : "=a"(regs[0]), "=b"(regs[1]), "=c"(regs[2]), "=d"(regs[3]) : "a"(eax), "c"(ecx)); }
 
-char* get_cpu_name() {
+char *get_cpu_name() {
     static char cpu_name[49];
     uint32_t regs[4];
 

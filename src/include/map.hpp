@@ -1,23 +1,26 @@
-#include <stdint.h>
-#ifndef MAP_H
-#define MAP_H
+#pragma once
 
-typedef const char* string;
+#include <memory.hpp>
+#include <string.hpp>
 
-struct KeyValue {
-    string key;
-    string value;
-};
+namespace map {
+extern "C" {
+typedef struct {
+    char *key;
+    char *value;
+} Pair;
 
-#define MAP_SIZE 256
+typedef struct {
+    Pair *data;
+    size_t capacity;
+    size_t size;
+} MapStrStr;
 
-extern KeyValue map[MAP_SIZE];
-
-uint32_t hash(string key);
-void mapAdd(string key, string value);
-string mapGet(string key);
-void mapRemove(string key);
-uint32_t mapSize();
-string mapKeyAt(string key);
-
-#endif
+void Init(MapStrStr *map, size_t initialCapacity);
+void Free(MapStrStr *map);
+void Resize(MapStrStr *map);
+void Insert(MapStrStr *map, const char *key, const char *value);
+char *Get(MapStrStr *map, const char *key);
+void Remove(MapStrStr *map, const char *key);
+}
+} // namespace map

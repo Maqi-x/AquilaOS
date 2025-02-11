@@ -1,12 +1,10 @@
-/**
- * -------------------------------------------------------------------------
+/******************************************************************************
  *                                   AquilaOS
- * (c) 2022-2024 Interpuce
- * 
+ * (c) 2025 Maqix
+ *
  * You should receive AquilaOS license with this source code. If not - check:
- *  https://github.com/Interpuce/AquilaOS/blob/main/LICENSE.md
- * -------------------------------------------------------------------------
- */
+ *  https://github.com/Maqi-x/AquilaOS/blob/main/LICENSE.md
+ ******************************************************************************/
 
 #pragma once
 

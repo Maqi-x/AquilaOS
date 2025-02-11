@@ -94,7 +94,6 @@ void paintscreen(uint8_t color) {
     update_cursor();
 }
 
-
 void clearline(uint16_t line) {
     if (line >= SCREEN_HEIGHT) {
         return;
@@ -134,7 +133,7 @@ void printct(const char *str, uint8_t color) {
     int col = (SCREEN_WIDTH - length) / 2;
 
     uint16_t row = cursor_pos / SCREEN_WIDTH;
-    cursor_pos =row * SCREEN_WIDTH + col;
+    cursor_pos = row * SCREEN_WIDTH + col;
 
     char temp[SCREEN_WIDTH + 1];
     strcpy(temp, str);
