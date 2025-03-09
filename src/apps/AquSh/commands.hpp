@@ -9,11 +9,15 @@
 #pragma once
 
 #include <screen.hpp>
+#include <speaker.hpp>
 #include <stdint.h>
 #include <string.hpp>
 #include <types.hpp>
 
 void cowsay(String message);
 void mapf();
-void help(uint16_t theme);
-extern int AquilNoteMain(uint8_t color, uint8_t barcolor);
+void help(uint16 theme);
+void printLogo(uint16 theme);
+void playStartupSong();
+
+extern int AquilNoteMain(uint8 color, uint8 barcolor);

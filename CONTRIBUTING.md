@@ -4,12 +4,12 @@ Thanks for your interest in contributing to AquilaOS. This is a quick guide how 
 
 ## Code writing standards
 
-There are standards in writing code for AquilaOS and to not make ten next useless commits reverting the change, please read `AquilaOS Code-writing standards` below.
+There are standards in writing code for AquilaOS and to not make ten next useless commits reverting the change, please read *AquilaOS Code-writing standards* below.
 
 1. Use [camelCase](https://en.wikipedia.org/wiki/camelCase) or PascalCase style.
 2. Never make directory in repo root folder if this is not absolutelly necessary (read [your creation warning](#contributing-to-the-apps)).
-3. Do not use `#include "../include/something_there.hpp"`. Instead, use `#include <something_there.hpp>`.
-4. Do not make any C or other non-header files in `include` directory.
+3. Do not use `#include "../include/somethingThere.hpp"`. Instead, use `#include <somethingThere.hpp>`.
+4. Do not make any C++ or other non-header files in `include` directory.
 
 Your pull request will be **rejected** if any of standards above is not used in your code.
 
@@ -37,18 +37,26 @@ To clone, compile and run virtually AquilaOS you will need `git`, `make`, `lld`,
 
 Clone the repository to the current folder skipping unnecessary commit history:
 
-`git clone https://github.com/Interpuce/AquilaOS . --depth 1`
+```sh
+git clone https://github.com/Interpuce/AquilaOS . --depth 1
+```
 
 Run this command in AquilaOS repo to build the OS:
 
-`make`
+```sh
+./build.sh
+```
 
 ### Running OS in virtual machine
 
 Run this command to run the OS:
 
-`make run`
+```sh
+./build.sh run
+```
 
 or You can run AquilaOS using this command:
 
-`qemu-system-x86_64 -kernel kernel.elf`
+```sh
+qemu-system-x86_64 -kernel kernel.elf
+```

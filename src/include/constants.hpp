@@ -10,7 +10,17 @@
 
 #pragma once
 
-constexpr string AQUILA_NAME = "AquilaOS Beta@4 Developer Preview";
-constexpr string AQUILA_VERSION = "Beta@4";
+constexpr string AQUILA_NAME = "AquilaOS Developer Preview";
+constexpr string AQUILA_VERSION = "Beta@5";
 // constexpr string PC_NAME = "AquilaPC";
 constexpr string PC_ARCH = "x86";
+
+#if defined(__clang__)
+constexpr string COMPILER = "Clang";
+#elif defined(__GNUC__) || defined(__GNUG__)
+constexpr string COMPILER = "GCC";
+#elif defined(_MSC_VER)
+constexpr string COMPILER = "MSVC";
+#else
+constexpr string COMPILER = "Unknown";
+#endif

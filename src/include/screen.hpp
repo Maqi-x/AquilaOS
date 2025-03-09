@@ -10,12 +10,15 @@
 
 #include <types.hpp>
 
-void printchar(char c, uint8_t color);
-void printstr(const char *str, uint8_t color);
+extern uint16 cursorPos;
+void printchar(char c, uint8 color, bool shiftRight = false);
+void printstr(const char* str, uint8 color);
 void delchar();
 void clearscreen();
-void paintscreen(uint8_t color);
-void printint(uint16_t value, uint8_t color);
-void clearline(uint16_t line);
-void paintline(uint16_t line, uint8_t color);
-void printct(const char *str, uint8_t color);
+void paintscreen(uint8 color);
+void printint(uint16 value, uint8 color);
+void clearline(uint16 line);
+void paintline(uint16 line, uint8 color);
+void printct(const char* str, uint8 color);
+
+void updateCursor();

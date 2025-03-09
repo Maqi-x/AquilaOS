@@ -7,13 +7,30 @@
  ******************************************************************************/
 
 #pragma once
-
+#include <string.hpp>
 #include <types.hpp>
 
-uint8 inb(uint16 port);
+namespace math {
 
-uint16 inw(uint16 port);
+bool isDigit(char str);
 
-void outb(uint16 port, uint8 value);
+class Parser {
+  public:
+    Parser(const char* expr);
+    long eval();
 
-void outw(uint16 port, uint16 data);
+    const char* expr;
+    size_t pos;
+
+    char peek();
+    char get();
+    long parseNumber();
+    long parseFactor();
+    long parseTerm();
+    long parseExpression();
+};
+
+long Eval(const char* expr);
+long Eval(String expr);
+
+} // namespace math

@@ -1,3 +1,11 @@
+/******************************************************************************
+ *                                   AquilaOS
+ * (c) 2025 Maqix
+ *
+ * You should receive AquilaOS license with this source code. If not - check:
+ *  https://github.com/Maqi-x/AquilaOS/blob/main/LICENSE.md
+ ******************************************************************************/
+
 #include "map.hpp"
 #include <memory.hpp>
 #include <msg.hpp>
@@ -5,13 +13,13 @@
 
 namespace map {
 
-void Init(MapStrStr *map, size_t initialCapacity) {
+void Init(MapStrStr* map, size_t initialCapacity) {
     map->capacity = initialCapacity;
     map->size = 0;
-    map->data = (Pair *)malloc(initialCapacity * sizeof(Pair));
+    map->data = (Pair*)malloc(initialCapacity * sizeof(Pair));
 }
 
-void Free(MapStrStr *map) {
+void Free(MapStrStr* map) {
     for (size_t i = 0; i < map->size; ++i) {
         free(map->data[i].key);
         free(map->data[i].value);
@@ -19,7 +27,7 @@ void Free(MapStrStr *map) {
     free(map->data);
 }
 
-void Resize(MapStrStr *map) {
+void Resize(MapStrStr* map) {
     size_t newCapacity = map->capacity * 2;
     io::Print("Resizing from ", 0x07);
     printint(map->capacity, 0x07);
@@ -27,7 +35,7 @@ void Resize(MapStrStr *map) {
     printint(newCapacity, 0x07);
     io::Println("", 0x07);
 
-    Pair *newData = (Pair *)malloc(newCapacity * sizeof(Pair));
+    Pair* newData = (Pair*)malloc(newCapacity * sizeof(Pair));
     if (!newData) return;
 
     for (size_t i = 0; i < map->size; ++i) {
@@ -40,7 +48,7 @@ void Resize(MapStrStr *map) {
     map->capacity = newCapacity;
 }
 
-void Insert(MapStrStr *map, const char *key, const char *value) {
+void Insert(MapStrStr* map, const char* key, const char* value) {
     if (map->size == map->capacity) {
         Resize(map);
     }
@@ -48,7 +56,7 @@ void Insert(MapStrStr *map, const char *key, const char *value) {
     for (size_t i = 0; i < map->size; ++i) {
         if (strEq(map->data[i].key, key)) {
             free(map->data[i].value);
-            map->data[i].value = (char *)malloc(strlen(value) + 1);
+            map->data[i].value = (char*)malloc(strlen(value) + 1);
             strcpy(map->data[i].value, value);
             return;
         }
@@ -58,17 +66,17 @@ void Insert(MapStrStr *map, const char *key, const char *value) {
         Resize(map);
     }
 
-    map->data[map->size].key = (char *)malloc(strlen(key) + 1);
+    map->data[map->size].key = (char*)malloc(strlen(key) + 1);
     strcpy(map->data[map->size].key, key);
 
-    map->data[map->size].value = (char *)malloc(strlen(value) + 1);
+    map->data[map->size].value = (char*)malloc(strlen(value) + 1);
     strcpy(map->data[map->size].value, value);
 
     ++map->size;
     ;
 }
 
-char *Get(MapStrStr *map, const char *key) {
+char* Get(MapStrStr* map, const char* key) {
     for (size_t i = 0; i < map->size; ++i) {
         if (strEq(map->data[i].key, key)) {
             return map->data[i].value;
@@ -77,7 +85,7 @@ char *Get(MapStrStr *map, const char *key) {
     return nullptr;
 }
 
-void Remove(MapStrStr *map, const char *key) {
+void Remove(MapStrStr* map, const char* key) {
     for (size_t i = 0; i < map->size; ++i) {
         if (strEq(map->data[i].key, key)) {
             free(map->data[i].key);

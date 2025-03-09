@@ -8,8 +8,10 @@
 
 #include <types.hpp>
 
-extern "C" void *memcpy(void *dest, const void *src, size_t n);
-extern void *malloc(size_t size);
+extern "C" void* memcpy(void* dest, const void* src, size_t n);
+extern void* malloc(size_t size);
 extern void InitMemory();
-extern void free(void *ptr);
-extern "C" void *memset(void *s, int c, size_t n);
+extern void free(void* ptr);
+extern "C" void* memset(void* s, int c, size_t n);
+
+uint8 cmosRead(uint8 reg);

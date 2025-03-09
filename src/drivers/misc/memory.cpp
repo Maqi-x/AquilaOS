@@ -13,35 +13,35 @@
 
 typedef struct MemoryBlock {
     size_t Size;
-    struct MemoryBlock *Next;
+    struct MemoryBlock* Next;
     int Free;
-} MemoryBlockT;
+} MemoryBlock;
 
-static uint8_t memoryPool[MEMORY_POOL_SIZE];
-static MemoryBlockT *freeList = (MemoryBlockT *)memoryPool;
+static uint8 memoryPool[MEMORY_POOL_SIZE];
+static MemoryBlock* freeList = (MemoryBlock*)memoryPool;
 
 void InitMemory() {
-    freeList->Size = MEMORY_POOL_SIZE - sizeof(MemoryBlockT);
+    freeList->Size = MEMORY_POOL_SIZE - sizeof(MemoryBlock);
     freeList->Next = nullptr;
     freeList->Free = 1;
 }
 
-extern "C" void *memcpy(void *dest, const void *src, size_t n) {
-    unsigned char *d = (unsigned char *)dest;
-    const unsigned char *s = (const unsigned char *)src;
+extern "C" void* memcpy(void* dest, const void* src, size_t n) {
+    unsigned char* d = (unsigned char*)dest;
+    const unsigned char* s = (const unsigned char*)src;
     for (size_t i = 0; i < n; i++) {
         d[i] = s[i];
     }
     return dest;
 }
 
-void *malloc(size_t size) {
-    MemoryBlockT *current = freeList;
+void* malloc(size_t size) {
+    MemoryBlock* current = freeList;
     while (current != NULL) {
         if (current->Free && current->Size >= size) {
-            if (current->Size > size + sizeof(MemoryBlockT)) {
-                MemoryBlockT *newBlock = (MemoryBlockT *)((uint8_t *)current + sizeof(MemoryBlockT) + size);
-                newBlock->Size = current->Size - size - sizeof(MemoryBlockT);
+            if (current->Size > size + sizeof(MemoryBlock)) {
+                MemoryBlock* newBlock = (MemoryBlock*)((uint8*)current + sizeof(MemoryBlock) + size);
+                newBlock->Size = current->Size - size - sizeof(MemoryBlock);
                 newBlock->Next = current->Next;
                 newBlock->Free = 1;
 
@@ -49,28 +49,28 @@ void *malloc(size_t size) {
                 current->Next = newBlock;
             }
             current->Free = 0;
-            return (void *)((uint8_t *)current + sizeof(MemoryBlockT));
+            return (void*)((uint8*)current + sizeof(MemoryBlock));
         }
         current = current->Next;
     }
     return NULL;
 }
 
-void free(void *ptr) {
+void free(void* ptr) {
     if (ptr == NULL) return;
 
-    MemoryBlockT *block = (MemoryBlockT *)((uint8_t *)ptr - sizeof(MemoryBlockT));
+    MemoryBlock* block = (MemoryBlock*)((uint8*)ptr - sizeof(MemoryBlock));
     block->Free = 1;
 
     if (block->Next != NULL && block->Next->Free) {
-        block->Size += sizeof(MemoryBlockT) + block->Next->Size;
+        block->Size += sizeof(MemoryBlock) + block->Next->Size;
         block->Next = block->Next->Next;
     }
 
-    MemoryBlockT *current = freeList;
+    MemoryBlock* current = freeList;
     while (current != NULL) {
         if (current->Next == block && current->Free) {
-            current->Size += sizeof(MemoryBlockT) + block->Size;
+            current->Size += sizeof(MemoryBlock) + block->Size;
             current->Next = block->Next->Next;
             break;
         }
@@ -78,18 +78,29 @@ void free(void *ptr) {
     }
 }
 
-extern "C" void *memset(void *s, int c, size_t n) {
-    unsigned char *ptr = (unsigned char *)s;
+extern "C" void* memset(void* s, int c, size_t n) {
+    unsigned char* ptr = (unsigned char*)s;
     while (n--) {
         *ptr++ = (unsigned char)c;
     }
     return s;
 }
 
-void *operator new(size_t size) { return malloc(size); }
+#define CMOS_ADDRESS 0x70
+#define CMOS_DATA 0x71
 
-void *operator new[](size_t size) { return malloc(size); }
+uint8 cmosRead(uint8 reg) {
+    asm volatile("outb %0, %1" ::"a"(reg), "Nd"(CMOS_ADDRESS));
+    asm volatile("jmp 1f; 1: jmp 1f; 1:");
+    uint8 value;
+    asm volatile("inb %1, %0" : "=a"(value) : "Nd"(CMOS_DATA));
+    return value;
+};
 
-void operator delete(void *ptr) noexcept { free(ptr); }
+void* operator new(size_t size) { return malloc(size); }
 
-void operator delete[](void *ptr) noexcept { free(ptr); }
+void* operator new[](size_t size) { return malloc(size); }
+
+void operator delete(void* ptr) noexcept { free(ptr); }
+
+void operator delete[](void* ptr) noexcept { free(ptr); }

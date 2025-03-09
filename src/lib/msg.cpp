@@ -6,9 +6,10 @@
  *  https://github.com/Maqi-x/AquilaOS/blob/main/LICENSE.md
  ******************************************************************************/
 
+#include <input.hpp>
 #include <msg.hpp>
-#include <screen.hpp>
 #include <string.hpp>
+#include <types.hpp>
 
 namespace io {
 
@@ -22,7 +23,18 @@ void Println(const string str, uint8 color) {
     printchar('\n', color);
 }
 
-void Println(String str, uint8_t color) { io::Println(str.c_str(), color); }
+void Println(String str, uint8 color) { io::Println(str.c_str(), color); }
+void Println(int num, uint8 color) {
+    printint(num, color);
+    printchar('\n', color);
+}
+
+String Prompt(String prompt, uint8 promptClr, uint8 inputClr, bool secret) {
+    Print(prompt, promptClr);
+    char buffer[128];
+    input(buffer, 128, secret, inputClr);
+    return String(buffer);
+}
 
 // ---------------- Message Boxes (legacy) --------------- //
 

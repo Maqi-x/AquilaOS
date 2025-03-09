@@ -5,4 +5,4 @@
 #include <string.hpp>
 #include <types.hpp>
 
-int AquilNoteMain(uint8_t color, uint8_t barcolor);
+int AquilNoteMain(uint8 color, uint8 barcolor);

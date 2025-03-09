@@ -10,5 +10,5 @@
 
 #include <types.hpp>
 
-void input(char *buffer, uint16 max_length, uint8 secret, uint8 color);
-uint8 readYN(char *text, uint8 color);
+void input(char* buffer, uint16 maxLength = 256, bool secret = false, uint8 color = 0x07, bool multiline = false, const char* end = "");
+uint8 readYN(char* text, uint8 color);

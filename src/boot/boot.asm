@@ -1,10 +1,10 @@
-; -------------------------------------------------------------------------
-;                                   AquilaOS
-; (c) 2025 Maqix
-; 
-; You should receive AquilaOS license with this source code. If not - check:
-;  https://github.com/Maqi-x/AquilaOS/blob/main/LICENSE.md
-; -------------------------------------------------------------------------
+; --------------------------------------------------------------------------- ;
+;                                   AquilaOS                                  ;
+; (c) 2025 Maqix                                                              ;
+;                                                                             ;
+; You should receive AquilaOS license with this source code. If not - check:  ;
+;  https://github.com/Maqi-x/AquilaOS/blob/main/LICENSE.md                    ;
+; --------------------------------------------------------------------------- ;
 
 ; If you are editing this file on a Visual Studio Code, please download
 ; extension for x86 assembly syntax, because Visual Studio Code don't
@@ -27,14 +27,12 @@ section .multiboot
 section .text
 
 ; The main function where AquilaOS starts. It is also declared in
-; linker script (/compile/linker.ld), defined in /kernel/kernel.c
+; linker script (/compile/linker.ld), defined in /kernel/kernel.cpp
 ; file.
 global start
-extern main
+extern main     ; main function from /kernel/kernel.cpp
 
 start:
-    cli ; Clear interrupts
-    call main ; Call the main function (from /kernel/kernel.c)
-    hlt ; Halt the proccessor
-
-; eclair was here (twice)
+    cli             ; Clear interrupts
+    call main       ; Call the main function (from /kernel/kernel.cpp)
+    hlt             ; Halt the proccessor

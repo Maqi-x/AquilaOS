@@ -5,15 +5,14 @@
  * You should receive AquilaOS license with this source code. If not - check:
  *  https://github.com/Maqi-x/AquilaOS/blob/main/LICENSE.md
  ******************************************************************************/
-
 #pragma once
 
 #include <types.hpp>
 
-uint8 inb(uint16 port);
+namespace speaker {
 
-uint16 inw(uint16 port);
+void speaker(uint32 frequency, uint32 duration);
+uint8 vdur(uint32 duration);
+uint8 vfrg(uint32 frequency);
 
-void outb(uint16 port, uint8 value);
-
-void outw(uint16 port, uint16 data);
+} // namespace speaker

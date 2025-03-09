@@ -1,1 +1,1 @@
-char *get_cpu_name();
+char* getCPUName();

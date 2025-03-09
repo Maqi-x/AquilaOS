@@ -6,8 +6,10 @@
  *  https://github.com/Maqi-x/AquilaOS/blob/main/LICENSE.md
  ******************************************************************************/
 
+// #define useint128
+
 #ifndef NULL
-#define NULL ((void *)0)
+#define NULL ((void*)0)
 
 typedef signed char int8;
 typedef unsigned char uint8;
@@ -21,25 +23,25 @@ typedef unsigned int uint32;
 typedef signed long long int64;
 typedef unsigned long long uint64;
 
+#ifdef useint128
+typedef __int128_t int128;
+typedef __uint128_t uint128;
+#endif
+
+#if 0
+maqix was here;
+#endif
+
+typedef float float32;
+typedef double float64;
+
 typedef unsigned int size_t;
-typedef unsigned int uintptr_t;
-typedef signed int intptr_t;
 
-typedef void (*function_ptr)();
+typedef unsigned int uintptr;
+typedef signed int intptr;
 
-typedef const char *string;
+typedef void (*FuncPtr)();
 
-typedef signed char int8_t;
-typedef unsigned char uint8_t;
-
-typedef signed short int16_t;
-typedef unsigned short uint16_t;
-
-typedef signed int int32_t;
-typedef unsigned int uint32_t;
-
-typedef signed long long int64_t;
-
-typedef unsigned long long uint64_t;
+typedef const char* string;
 
 #endif

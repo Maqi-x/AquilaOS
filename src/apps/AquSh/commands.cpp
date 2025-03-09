@@ -94,13 +94,13 @@ void mapf() {
     io::Print("\n", 0x07);
 }
 
-void help(uint16_t theme) {
+void help(uint16 theme) {
     //    mapAdd("ver", "displays OS version info");
     //    mapAdd("print <arg1>", "prints out <arg1>");
     //    mapAdd("map", "prints out every VGA color and every printable character
     //    in AquilaOS"); mapAdd("cowsay <arg1>", "displays ascii art of a cow
     //    saying <arg1>"); mapAdd("tinypad", "very simple note pad"); for
-    //    (uint32_t i = 0; i < mapSize(); ++i) {
+    //    (uint32 i = 0; i < mapSize(); ++i) {
     //        auto command = mapKeyAt(i);
     //        auto description = mapGet(command);
     //        io::Print(command + ": ", theme);
@@ -123,4 +123,31 @@ void help(uint16_t theme) {
     io::Print("aquilnote", theme);
     io::Println(": very simple note pad", 0x07);
     io::Println("", 0x07);
+}
+
+void printLogo(uint16 theme) {
+    io::Println("", 0x07);
+    io::Println("                        @@@@@@@@@                           ", theme);
+    io::Println("                       @@@@@@@@@@@@@@                       ", theme);
+    io::Println("                       @@@@@@@@@@@@@@@@                     ", theme);
+    io::Println("                       @@@@@@@@@@@@@@@@                     ", theme);
+    io::Println("                    @@@@@@@@@@@@@@@@@@@     @@@@@           ", theme);
+    io::Println("                    @@@@@@@@@@@@@@@@@@     @@@@@@@@         ", theme);
+    io::Println("                    @@@@@@@@@@@@@@@@      @@@@@@@@@@        ", theme);
+    io::Println("                    @@@@@@@@@@@@@@@@     @@@@@@@@@@@        ", theme);
+    io::Println("                    @@@@@@@@@@@@@@@@    @@@@@   @@@@@       ", theme);
+    io::Println("               @@@@@@@@@@@@@@@@@@@@    @@@@@@   @@@@@@      ", theme);
+    io::Println("               @@@@@@@@@@@@@@@@@@     @@@@@@     @@@@@@     ", theme);
+    io::Println("                @@@@@@@@@@@@@@@@     @@@@@@       @@@@@     ", theme);
+    io::Println("                 @@@@@@@@@@@@@@@    @@@@@@@@@@@@@@@@@@@@    ", theme);
+    io::Println("                  @@@@@@@@@@@@     @@@@@@@@@@@@@@@@@@@@@@   ", theme);
+    io::Println("                      @@@@@       @@@@@@@@@@@@@@@@@@@@@@@@  ", theme);
+    io::Println("                                 @@@@@@             @@@@@@  ", theme);
+    io::Println("                                 @@@@@@             @@@@@@  ", theme);
+    io::Println("                                  @@@@               @@@@   ", theme);
+    io::Println("", 0x07);
+}
+
+void playStartupSong() {
+#include "startupSong.hpp"
 }

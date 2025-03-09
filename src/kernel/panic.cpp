@@ -11,7 +11,7 @@
 #include <screen.hpp>
 #include <types.hpp>
 
-void kernelpanic(const char *errcode) {
+void kernelpanic(const char* errcode) {
     paintscreen(COLOR_3);
     io::Println(" ", COLOR_1);
     io::Println(" Kernel panic!", COLOR_2);

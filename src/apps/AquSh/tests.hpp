@@ -9,3 +9,5 @@ bool TestMemset();
 bool TestFreeNullPointer();
 bool TestLargeAllocation();
 bool TestString();
+bool TestSlice();
+bool TestArray();

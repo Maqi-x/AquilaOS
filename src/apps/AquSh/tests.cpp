@@ -1,10 +1,21 @@
+/******************************************************************************
+ *                                   AquilaOS
+ * (c) 2025 Maqix
+ *
+ * You should receive AquilaOS license with this source code. If not - check:
+ *  https://github.com/Maqi-x/AquilaOS/blob/main/LICENSE.md
+ ******************************************************************************/
+
 #include "tests.hpp"
 #include <string.hpp>
+
+#include <Types/Array.hpp>
+#include <Types/Slice.hpp>
 
 bool TestBasicAllocation() {
     io::ShowInfo("[ TestBasicAllocation ] - Starting");
 
-    int *ptr = (int *)malloc(sizeof(int));
+    int* ptr = (int*)malloc(sizeof(int));
     if (ptr == nullptr) {
         io::ShowError("[ TestBasicAllocation ] - Allocation error");
         return false;
@@ -25,9 +36,9 @@ bool TestBasicAllocation() {
 bool TestMultipleAllocations() {
     io::ShowInfo("[ TestMultipleAllocations] - Starting");
 
-    int *ptr1 = (int *)malloc(sizeof(int));
-    int *ptr2 = (int *)malloc(sizeof(int));
-    int *ptr3 = (int *)malloc(sizeof(int));
+    int* ptr1 = (int*)malloc(sizeof(int));
+    int* ptr2 = (int*)malloc(sizeof(int));
+    int* ptr3 = (int*)malloc(sizeof(int));
 
     if (ptr1 == nullptr || ptr2 == nullptr || ptr3 == nullptr) {
         io::ShowError("[ TestMultipleAllocations ] - Allocation error");
@@ -60,7 +71,7 @@ bool TestMultipleAllocations() {
 bool TestReallocation() {
     io::ShowInfo("[ TestReallocation ] - Starting");
 
-    int *ptr = (int *)malloc(sizeof(int));
+    int* ptr = (int*)malloc(sizeof(int));
     if (ptr == nullptr) {
         io::ShowError("[ TestReallocation ] - Initial allocation failed");
         return false;
@@ -69,7 +80,7 @@ bool TestReallocation() {
     *ptr = 99;
     free(ptr);
 
-    ptr = (int *)malloc(sizeof(int));
+    ptr = (int*)malloc(sizeof(int));
     if (ptr == nullptr) {
         io::ShowError("[ TestReallocation ] - Reallocation failed");
         return false;
@@ -90,7 +101,7 @@ bool TestReallocation() {
 bool TestMemset() {
     io::ShowInfo("[ TestMemset ] - Starting");
 
-    char *buffer = (char *)malloc(10);
+    char* buffer = (char*)malloc(10);
     if (buffer == nullptr) {
         io::ShowError("[ TestMemset ] - Allocation failed");
         return false;
@@ -122,7 +133,7 @@ bool TestLargeAllocation() {
     io::ShowInfo("[ TestLargeAllocation ] - Starting");
 
     size_t largeSize = 1024 * 1024;
-    void *ptr = malloc(largeSize);
+    void* ptr = malloc(largeSize);
     if (ptr == nullptr) {
         io::ShowError("[ TestLargeAllocation ] - Large allocation failed");
         return false;
@@ -148,4 +159,40 @@ bool TestString() {
     else
         io::ShowError("[ TestString ] - failed");
     return eqTest;
+}
+
+bool TestSlice() {
+    io::ShowInfo("[ TestSlice ] - Starting");
+    Slice<int> arr;
+    for (int i = 10; i > 0; i--) {
+        arr.Append(i);
+    }
+
+    Slice<int> arr2;
+    arr2.Append(123);
+    arr.Extend(arr2);
+
+    for (auto i = arr.Len(); i > 0; i--) {
+        io::Println(arr[i]);
+    }
+
+    if (arr != arr2) {
+        io::ShowOk("[ TestSlice ] - Test successful");
+        return true;
+    } else {
+        io::ShowError("[ TestSlice ] - failed");
+        return false;
+    }
+}
+
+bool TestArray() {
+    io::ShowInfo("[ TestArray ] - Starting");
+    Array<int, 6> arr = {1, 4, 5, 6, 2, 8};
+    if (arr[1] == 4 && arr[5] == 8) {
+        io::ShowOk("[ TestArray ] - Test successful");
+        return true;
+    } else {
+        io::ShowError("[ TestArray ] - failed");
+        return false;
+    }
 }

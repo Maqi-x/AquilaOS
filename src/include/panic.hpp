@@ -12,8 +12,8 @@
 #include <screen.hpp>
 #include <types.hpp>
 
-constexpr uint8_t COLOR_1 = 0x47;
-constexpr uint8_t COLOR_2 = 0x4F;
-constexpr uint8_t COLOR_3 = 0x47;
+constexpr uint8 COLOR_1 = 0x47;
+constexpr uint8 COLOR_2 = 0x4F;
+constexpr uint8 COLOR_3 = 0x47;
 
-void kernelpanic(const char *errcode);
+void kernelpanic(const char* errcode);
